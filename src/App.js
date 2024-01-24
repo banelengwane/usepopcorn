@@ -55,7 +55,7 @@ const average = (arr) =>
   const KEY = 'b3e0f452'
 
 export default function App(){
-  const [query, setQuery] = useState("");
+    const [query, setQuery] = useState("");
     const [movies, setMovies] = useState([]);
     const [watched, setWatched] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -276,6 +276,10 @@ function MovieDetais({selectedId, onCloseMovie, onAddWatched, watched}){
     getMovieDetails()
   }, [selectedId])
 
+  useEffect(()=> {
+    if(!title) return
+    document.title=`Movie | ${title}`
+  }, [title])
   function handleAdd(){
     const newWatchedMovie = {
       imdbID: selectedId,
