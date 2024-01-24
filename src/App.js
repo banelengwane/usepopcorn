@@ -77,7 +77,7 @@ export default function App(){
     function handleDeleteWatched(id){
       setWatched(watched => watched.filter(movie=> movie.imdbID !== id));
     }
-    
+
     useEffect(function(){
     const controller = new AbortController();
 
@@ -293,6 +293,19 @@ function MovieDetais({selectedId, onCloseMovie, onAddWatched, watched}){
       document.title = 'usePopcorn';
     }
   }, [title])
+
+  useEffect(() => {
+    function escapeButton (e){
+      if(e.code === 'Escape') {
+        onCloseMovie()
+      }
+    }
+    document.addEventListener('keydown', escapeButton);
+
+    return function(){
+      document.removeEventListener('keydown', escapeButton)
+    }
+  }, [onCloseMovie])
 
   function handleAdd(){
     const newWatchedMovie = {
