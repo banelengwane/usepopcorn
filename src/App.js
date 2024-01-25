@@ -169,7 +169,8 @@ function Search ({query, setQuery}) {
     document.addEventListener('keydown', callback)
     
     return () => document.addEventListener('keydown', callback)
-  }, [])
+  }, [setQuery])
+
   return (
     <input
       className="search"
@@ -237,6 +238,13 @@ function MovieDetais({selectedId, onCloseMovie, onAddWatched, watched}){
   const [userRating, setUserRating] = useState('')
   const isWatched = watched.map(movie => movie.imdbID).includes(selectedId)
 
+  // technique to keep count of how many times has the user rated a movie
+  const countRef = useRef(0);
+
+  useEffect(() => {
+    if(userRating) countRef.current = countRef.current + 1;
+  }, [userRating])
+
   const watchedUserRating = watched.find(movie => movie.imdbID === selectedId)?.userRating
 
   const {
@@ -295,7 +303,8 @@ function MovieDetais({selectedId, onCloseMovie, onAddWatched, watched}){
       poster,
       imdbRating: Number(imdbRating),
       runtime: runtime.split(' ').at(0),
-      userRating
+      userRating,
+      countRatingDecisions: countRef.current
     }
     onAddWatched(newWatchedMovie);
     onCloseMovie();
